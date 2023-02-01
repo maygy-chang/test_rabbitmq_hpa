@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: perf-test
+  name: perf-test
+  namespace: bitnami
+spec:
+  containers:
+  - args:
+    - --uri
+    - amqp://user:password@my-release-rabbitmq
+    image: pivotalrabbitmq/perf-test
+    name: perf-test

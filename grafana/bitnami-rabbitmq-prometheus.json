@@ -1,0 +1,2743 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "A new RabbitMQ Management Overview",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 10991,
+  "graphTooltip": 1,
+  "id": 29,
+  "iteration": 1646107709942,
+  "links": [
+    {
+      "icon": "doc",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Monitoring with Prometheus & Grafana",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://www.rabbitmq.com/prometheus.html"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 73,
+      "title": "Workload & KPI",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "The rate of messages received from publishers and successfully routed to the master queue replicas.\n\n* [Queues](https://www.rabbitmq.com/queues.html)\n* [Publishers](https://www.rabbitmq.com/publishers.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 75,
+      "interval": "$scrape_interval",
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages_published_total[$interval]))*60 ",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "queue published",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages_delivered_total{queue=\"$queue_name\"}[1m]))*60",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "delivered to consumers",
+          "refId": "E"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages_delivered_total[1m]))*60/sum(kube_deployment_status_replicas_available{deployment=\"rabbitmq-consumer\",namespace=\"$namespace\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "RC",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Production: Messages routed to queues / min",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:3847",
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:3848",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "The rate of messages delivered to consumers. It includes messages that have been redelivered.\n\nThis metric does not include messages that have been fetched by consumers using `basic.get` (consumed by polling).\n\n* [Consumers](https://www.rabbitmq.com/consumers.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 76,
+      "interval": "$scrape_interval",
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages_delivered_total{queue=\"$queue_name\"}[$interval]))*60",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "delivered to consumers",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Consumption: Messages delivered / min",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:3243",
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:3244",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "\n\nAim to keep this value as low as possible. RabbitMQ behaves best when messages are flowing through it. It's OK for publishers to occasionally outpace consumers, but the expectation is that consumers will eventually process all ready messages.\n\nIf this metric keeps increasing, your system will eventually run out of memory and/or disk space. Consider using TTL or Queue Length Limit to prevent unbounded message growth.\n\n* [Queues](https://www.rabbitmq.com/queues.html)\n* [Consumers](https://www.rabbitmq.com/consumers.html)\n* [Queue Length Limit](https://www.rabbitmq.com/maxlength.html)\n* [Time-To-Live and Expiration](https://www.rabbitmq.com/ttl.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 77,
+      "interval": "$scrape_interval",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(kube_deployment_spec_replicas{deployment=\"rabbitmq-consumer\",namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "spec",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_deployment_status_replicas_available{deployment=\"rabbitmq-consumer\",namespace=\"$namespace\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "available",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Consumer Replicas",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:4232",
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:4233",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Total number of ready messages ready to be delivered to consumers.\n\nAim to keep this value as low as possible. RabbitMQ behaves best when messages are flowing through it. It's OK for publishers to occasionally outpace consumers, but the expectation is that consumers will eventually process all ready messages.\n\nIf this metric keeps increasing, your system will eventually run out of memory and/or disk space. Consider using TTL or Queue Length Limit to prevent unbounded message growth.\n\n* [Queues](https://www.rabbitmq.com/queues.html)\n* [Consumers](https://www.rabbitmq.com/consumers.html)\n* [Queue Length Limit](https://www.rabbitmq.com/maxlength.html)\n* [Time-To-Live and Expiration](https://www.rabbitmq.com/ttl.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 81,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_queue_messages{queue=\"$queue_name\"}) by (queue)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{queue}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Queue Messages  - $queue_name",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Total number of ready messages ready to be delivered to consumers.\n\nAim to keep this value as low as possible. RabbitMQ behaves best when messages are flowing through it. It's OK for publishers to occasionally outpace consumers, but the expectation is that consumers will eventually process all ready messages.\n\nIf this metric keeps increasing, your system will eventually run out of memory and/or disk space. Consider using TTL or Queue Length Limit to prevent unbounded message growth.\n\n* [Queues](https://www.rabbitmq.com/queues.html)\n* [Consumers](https://www.rabbitmq.com/consumers.html)\n* [Queue Length Limit](https://www.rabbitmq.com/maxlength.html)\n* [Time-To-Live and Expiration](https://www.rabbitmq.com/ttl.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 91,
+      "interval": "60s",
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages{queue=\"$queue_name\"}[$interval])) by (queue)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{queue}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Queue Processing Rate - $queue_name",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "Total number of ready messages ready to be delivered to consumers.\n\nAim to keep this value as low as possible. RabbitMQ behaves best when messages are flowing through it. It's OK for publishers to occasionally outpace consumers, but the expectation is that consumers will eventually process all ready messages.\n\nIf this metric keeps increasing, your system will eventually run out of memory and/or disk space. Consider using TTL or Queue Length Limit to prevent unbounded message growth.\n\n* [Queues](https://www.rabbitmq.com/queues.html)\n* [Consumers](https://www.rabbitmq.com/consumers.html)\n* [Queue Length Limit](https://www.rabbitmq.com/maxlength.html)\n* [Time-To-Live and Expiration](https://www.rabbitmq.com/ttl.html)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 92,
+      "interval": "60s",
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(rabbitmq_queue_messages{queue=\"$queue_name\"}[$interval])) by (queue) /sum(rate(rabbitmq_queue_messages_delivered_total{queue=\"$queue_name\"}[$interval])) by (queue)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Queue/consumption-{{queue}}",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "target",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.1",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Queue Latency (seconds) - $queue_name",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "s",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 89,
+      "panels": [],
+      "title": "Resource",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 85,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"rabbitmq-publisher.*\",namespace=\"$namespace\"}[$interval]))*1000",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "publisher",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"rabbitmq-publisher.*\",namespace=\"$namespace\",resource=\"cpu\"})*1000",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Publisher CPU Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "short",
+          "label": "mCore",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 82,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"my-release-rabbitmq.*\",namespace=\"$namespace\"}[$interval]))*1000",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "rabbitmq",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"my-release-rabbitmq.*\",namespace=\"$namespace\",resource=\"cpu\"})*1000",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "RabbitMQ CPU Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "short",
+          "label": "mCore",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 84,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"rabbitmq-consumer.*\",namespace=\"$namespace\"}[$interval]))*1000",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "consumer",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"rabbitmq-consumer.*\",namespace=\"$namespace\",resource=\"cpu\"})*1000",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "consumer-limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Consumer CPU Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "short",
+          "label": "mCore",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 86,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(container_memory_working_set_bytes{pod=~\"rabbitmq-publisher.*\",namespace=\"$namespace\"}) ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "publisher",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"rabbitmq-publisher.*\",namespace=\"$namespace\",resource=\"memory\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Publisher Memory Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "decbytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 87,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(container_memory_working_set_bytes{pod=~\"my-release-rabbitmq.*\",namespace=\"$namespace\"}) ",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "rabbitmq",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"my-release-rabbitmq.*\",namespace=\"$namespace\",resource=\"memory\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "RabbitMQ Memory Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "decbytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 83,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": false
+      },
+      "percentage": false,
+      "pluginVersion": "8.2.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?0(\\b|\\.)/",
+          "color": "#56A64B"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?1(\\b|\\.)/",
+          "color": "#F2CC0C"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?2(\\b|\\.)/",
+          "color": "#3274D9"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?3(\\b|\\.)/",
+          "color": "#A352CC"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?4(\\b|\\.)/",
+          "color": "#FF780A"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?5(\\b|\\.)/",
+          "color": "#96D98D"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?6(\\b|\\.)/",
+          "color": "#FFEE52"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?7(\\b|\\.)/",
+          "color": "#8AB8FF"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?8(\\b|\\.)/",
+          "color": "#CA95E5"
+        },
+        {
+          "alias": "/^rabbit@[a-zA-Z\\.\\-]*?9(\\b|\\.)/",
+          "color": "#FFB357"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(container_memory_working_set_bytes{pod=~\"rabbitmq-consumer.*\",namespace=\"$namespace\"}) ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "consumer",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(kube_pod_container_resource_limits{pod=~\"rabbitmq-consumer.*\",namespace=\"$namespace\",resource=\"memory\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "limit",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Consumer Memory Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:578",
+          "decimals": 0,
+          "format": "decbytes",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:579",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 71,
+      "panels": [],
+      "title": "Cluster Status",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 2,
+                  "text": "Down"
+                },
+                "1": {
+                  "index": 1,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 32
+      },
+      "id": 101,
+      "interval": "$scrape_interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_up{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Status",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 32
+      },
+      "id": 94,
+      "interval": "$scrape_interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_queue_consumers{namespace=\"$namespace\",queue=\"$queue_name\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Consumers in Queue - $queue_name",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 32
+      },
+      "id": 95,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_connectionsTotal{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Connections",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 32
+      },
+      "id": 40,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_queuesTotal{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Queues",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 32
+      },
+      "id": 38,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_exchangesTotal{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Exchanges",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#1F60C4",
+                "value": null
+              },
+              {
+                "color": "#37872D",
+                "value": 3
+              },
+              {
+                "color": "#C4162A",
+                "value": 8
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 32
+      },
+      "id": 67,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_running{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Nodes",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 35
+      },
+      "id": 96,
+      "interval": "$scrape_interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_channelsTotal{namespace=\"$namespace\"}) - sum(rabbitmq_consumersTotal{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Publishers",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 35
+      },
+      "id": 99,
+      "interval": "$scrape_interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_consumersTotal)",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Consumers",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 35
+      },
+      "id": 41,
+      "interval": "$scrape_interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rabbitmq_queue_consumer_utilisation{namespace=\"$namespace\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Consumer Utilization in Queue",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#C4162A",
+                "value": null
+              },
+              {
+                "color": "#1F60C4",
+                "value": 0
+              },
+              {
+                "color": "#37872D",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+

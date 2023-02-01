@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-publisher
+  namespace: bitnami
+  labels:
+    app: rabbitmq-publisher
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-publisher
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-publisher
+    spec:
+      containers:
+        - name: rabbitmq-publisher
+          image: jeffhollan/rabbitmq-client:dev
+          imagePullPolicy: Always
+          command:
+          - receive
+          args:
+          - "amqp://user:password@my-release-rabbitmq:5672"
