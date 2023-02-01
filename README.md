@@ -9,4 +9,4 @@
 -- maximum replcia number is 100
 -- duration is 300 minutes
 ### modify configuration
--- modify define.py
+- modify define.py
